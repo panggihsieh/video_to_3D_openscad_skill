@@ -4,7 +4,7 @@
 
 專案網址：[panggihsieh/video_to_3D_openscad_skill](https://github.com/panggihsieh/video_to_3D_openscad_skill)
 
-本倉庫提供一份給 AI Agent 使用的完整建模流程規格。主要文件 [`video_to_openscad.md`](video_to_openscad.md) 定義環境檢查、影片抽幀、幾何特徵拆解、尺寸來源優先權、OpenSCAD 模組化建模、碰撞與間隙檢查，以及多視角渲染驗證等規則。它適合用來協助重建外殼、支架、固定座、治具及其他具有明確工程幾何特徵的物件。
+本倉庫提供一份給 AI Agent 使用的完整建模流程規格。主要文件 [`SKILL.md`](SKILL.md) 定義環境檢查、影片抽幀、幾何特徵拆解、尺寸來源優先權、OpenSCAD 模組化建模、碰撞與間隙檢查，以及多視角渲染驗證等規則。它適合用來協助重建外殼、支架、固定座、治具及其他具有明確工程幾何特徵的物件。
 
 對應輸出包含：
 - `model.scad`
@@ -22,7 +22,7 @@ git clone https://github.com/panggihsieh/video_to_3D_openscad_skill.git
 cd video_to_3D_openscad_skill
 ```
 
-使用時，將 `video_to_openscad.md` 提供給支援自訂指令或 Skill 的 AI Agent，並一併提供：
+使用時，將 `SKILL.md` 提供給支援自訂指令或 Skill 的 AI Agent，並一併提供：
 
 - 物件的 360° 旋轉影片或多角度照片
 - 至少一組可靠的實測尺寸，建議包含整體寬、深、高
@@ -31,7 +31,7 @@ cd video_to_3D_openscad_skill
 範例提示詞：
 
 ```text
-請依照 video_to_openscad.md 的流程，分析 input/object.mp4 與
+請依照 SKILL.md 的流程，分析 input/object.mp4 與
 input/dimensions.yaml，建立參數化 OpenSCAD 模型。先完成環境與輸入檢查，
 再依序進行抽幀、特徵拆解、碰撞／間隙檢查和多視角渲染驗證。
 ```
@@ -40,22 +40,29 @@ input/dimensions.yaml，建立參數化 OpenSCAD 模型。先完成環境與輸�
 
 ## Codex Skill 使用說明
 
-本專案可作為 Codex 的重複使用建模流程。完整 Skill 指令位於 GitHub 倉庫中的 [`video_to_openscad.md`](https://github.com/panggihsieh/video_to_3D_openscad_skill/blob/main/video_to_openscad.md)。
+本專案是可安裝的 Codex Skill。完整指令位於 GitHub 倉庫中的 [`SKILL.md`](https://github.com/panggihsieh/video_to_3D_openscad_skill/blob/main/SKILL.md)。
 
 ### 方法一：直接從 GitHub 使用
 
 不安裝 Skill 時，可在 Codex 對話中提供上述 GitHub 文件網址，或先 Clone 倉庫，再要求 Codex 讀取本機文件：
 
 ```text
-請讀取 video_to_openscad.md，並依照其中的完整流程處理這次建模工作。
+請讀取 SKILL.md，並依照其中的完整流程處理這次建模工作。
 輸入影片：input/object.mp4
 尺寸資料：input/dimensions.yaml
 請先執行環境檢查，不要跳過 Collision Check、Clearance Check 與 Render Validation。
 ```
 
-### 方法二：安裝後以 Skill 名稱呼叫
+### 方法二：從 GitHub 安裝 Skill（建議）
 
-若已將本專案安裝為 Codex Skill，可在 Codex CLI 或 IDE extension 使用 `/skills` 查看可用技能，或在提示詞中以 `$` 明確指定 Skill：
+在另一台已安裝 Codex 的電腦開啟對話，輸入：
+
+```text
+使用 $skill-installer，從以下 GitHub 倉庫安裝 Skill：
+https://github.com/panggihsieh/video_to_3D_openscad_skill
+```
+
+安裝完成後重新開啟 Codex 或建立新對話，再於 Codex CLI 或 IDE extension 使用 `/skills` 確認 `video-to-openscad` 已出現在清單中。之後可在提示詞中以 `$` 明確指定：
 
 ```text
 使用 $video-to-openscad 分析 input/object.mp4 與 input/dimensions.yaml，
@@ -65,7 +72,7 @@ input/dimensions.yaml，建立參數化 OpenSCAD 模型。先完成環境與輸�
 也可以直接描述工作內容。當請求與 Skill 的適用範圍相符時，Codex 可依 Skill 的 `description` 自動判斷是否使用；若希望確保本次一定套用，建議明確寫出 `$video-to-openscad`。
 
 > [!IMPORTANT]
-> Codex 的標準 Skill 結構是「一個技能目錄內包含必要的 `SKILL.md`」，且 `SKILL.md` 必須提供 `name` 與 `description` metadata。本倉庫目前的主要文件名為 `video_to_openscad.md`；若要作為標準獨立 Skill 安裝，需先將它整理為 `video-to-openscad/SKILL.md` 結構。僅 Clone GitHub 倉庫不等於已安裝 Skill。
+> 安裝 Skill 只會提供建模流程與規則，不會自動安裝 OpenSCAD、FFmpeg、Python 或 Python 套件。第一次建模時仍必須完成環境檢查。
 
 Codex Skill 的結構與啟用方式可參考 [OpenAI 官方 Build skills 文件](https://learn.chatgpt.com/codex/build-skills)。
 

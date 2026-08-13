@@ -1,3 +1,8 @@
+---
+name: video-to-openscad
+description: Convert 360-degree rotation videos, top-view videos, multi-angle images, and measured dimensions into modular parametric OpenSCAD models with frame extraction, feature decomposition, STRUCTURE/KEEP/VOID/CLEARANCE classification, dependency planning, collision and clearance checks, multi-view rendering, visual comparison, iterative correction, and SCAD/STL/optional 3MF export. Use for engineering-shaped objects such as enclosures, mounts, brackets, fixtures, containers, motor holders, PCB cases, and printable mechanical parts reconstructed from video or image references.
+---
+
 # Video-to-3D OpenSCAD Skill
 
 ## 目的

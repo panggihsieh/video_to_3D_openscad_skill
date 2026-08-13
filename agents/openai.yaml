@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video to 3D OpenSCAD"
+  short_description: "從影片與尺寸重建可驗證的參數化 OpenSCAD 模型"
+  default_prompt: "Use $video-to-openscad to reconstruct an engineering object from rotation video, multi-angle images, and measured dimensions."

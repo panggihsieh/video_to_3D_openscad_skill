@@ -47,6 +47,21 @@ description: Convert 360-degree rotation videos, top-view videos, multi-angle im
 
 在確認必要軟體可以正常使用之前，不得進入正式建模流程。
 
+## 0.0 自動補齊缺少的環境
+
+依序執行「偵測 → 安裝缺失項目 → 重新偵測 → 保存報告」，不得只回報缺失後繼續建模。
+
+1. 偵測作業系統、CPU 架構、可用套件管理器、目前 Python 執行檔及權限範圍。
+2. 先列出已安裝、缺少及即將安裝的 Required 項目。
+3. 缺少 Python 套件時，優先建立專案本機 `.venv`，再以該環境的 Python 執行 `pip install opencv-python numpy PyYAML Pillow`。後續腳本固定使用同一個 Python 執行檔。
+4. 缺少 OpenSCAD、FFmpeg、ffprobe 或 Python 時，使用作業系統現有且可信任的套件管理器安裝：Windows 優先 `winget`，macOS 優先 Homebrew，Debian/Ubuntu 優先 `apt`，Fedora/RHEL 優先 `dnf`，Arch 優先 `pacman`。
+5. 執行安裝前先顯示實際指令。若安裝需要系統管理員權限、接受授權條款、修改系統範圍或目前執行環境要求核准，先取得使用者確認；不得繞過權限機制。
+6. 不使用來源不明的下載網址、任意遠端安裝腳本或未驗證的二進位檔。套件管理器無法使用時，標記 `BLOCKED` 並提供官方安裝方式。
+7. 安裝完成後重新執行所有版本與 import 檢查。只有全部 Required 項目通過才可標記 `READY` 並開始建模。
+8. 將偵測結果、執行過的安裝指令、版本、Python 路徑及失敗原因寫入 `analysis/environment_report.md`；不得記錄密碼、token 或其他憑證。
+
+不得因快取顯示先前成功就忽略本次指令不存在或 import 失敗。自動安裝失敗時最多針對明確原因修正並重試一次，之後停止並回報，不得反覆安裝。
+
 ## 0.1 必要軟體
 
 ### OpenSCAD
@@ -72,7 +87,7 @@ ERROR: OpenSCAD not found
 STATUS: BLOCKED
 ```
 
-此時停止建模流程並提示安裝 OpenSCAD。
+此時先依 0.0 的自動補齊流程安裝 OpenSCAD，重新檢查仍失敗才停止建模。
 
 ---
 
@@ -108,6 +123,8 @@ ffprobe -version
 ERROR: FFmpeg not found
 STATUS: BLOCKED
 ```
+
+此時先依 0.0 的自動補齊流程安裝 FFmpeg（`ffprobe` 通常由同一套件提供），重新檢查仍失敗才停止建模。
 
 ---
 
@@ -165,10 +182,10 @@ Missing Python packages:
 STATUS: BLOCKED
 ```
 
-建議安裝：
+缺少時先依 0.0 建立或重用專案 `.venv` 並安裝：
 
 ```bash
-pip install opencv-python numpy PyYAML Pillow
+python -m pip install opencv-python numpy PyYAML Pillow
 ```
 
 ---

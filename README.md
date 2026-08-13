@@ -72,7 +72,21 @@ https://github.com/panggihsieh/video_to_3D_openscad_skill
 也可以直接描述工作內容。當請求與 Skill 的適用範圍相符時，Codex 可依 Skill 的 `description` 自動判斷是否使用；若希望確保本次一定套用，建議明確寫出 `$video-to-openscad`。
 
 > [!IMPORTANT]
-> 安裝 Skill 只會提供建模流程與規則，不會自動安裝 OpenSCAD、FFmpeg、Python 或 Python 套件。第一次建模時仍必須完成環境檢查。
+> 安裝 Skill 本身只會下載建模流程與規則。第一次呼叫 Skill 時會先檢查環境；若缺少 Python 套件，優先在專案 `.venv` 自動安裝，若缺少 OpenSCAD、FFmpeg 或 Python，則使用作業系統現有的可信任套件管理器補齊。需要系統管理員權限、接受授權條款或修改系統範圍時，會先要求使用者確認。所有必要工具通過重驗前不會開始建模。
+
+環境補齊流程：
+
+```text
+偵測作業系統與工具
+        ↓
+列出缺少項目與安裝指令
+        ↓
+安裝缺少的必要工具／套件
+        ↓
+重新檢查版本與 Python imports
+        ↓
+READY：開始建模／BLOCKED：停止並回報
+```
 
 Codex Skill 的結構與啟用方式可參考 [OpenAI 官方 Build skills 文件](https://learn.chatgpt.com/codex/build-skills)。
 
